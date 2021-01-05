@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<parameters>
+
+    <!-- Connection details -->
+    <dbtype>monetdb</dbtype>
+    <driver>nl.cwi.monetdb.jdbc.MonetDriver</driver>
+    <DBUrl>jdbc:monetdb://localhost:50000/sibench</DBUrl>
+    <username>monetdb</username>
+    <password>monetdb</password>
+    <isolation>TRANSACTION_SERIALIZABLE</isolation>
+    <uploadCode></uploadCode>
+    <uploadUrl></uploadUrl>
+    <loaderThreads>1</loaderThreads>
+    
+    <scalefactor>100</scalefactor>
+    
+    <!-- The workload -->
+    <terminals>1</terminals>
+    <works>
+        <work>
+          <time>60</time>
+          <rate>10</rate>
+          <weights>50,50</weights>
+        </work>
+    </works>
+
+    <!-- SIBENCH Procedures declaration -->
+    <transactiontypes>
+        <transactiontype>
+                <name>MinRecord</name>
+        </transactiontype>
+        <transactiontype>
+                <name>UpdateRecord</name>
+        </transactiontype>
+    </transactiontypes>
+</parameters>
