@@ -8,18 +8,20 @@
     <username>monetdb</username>
     <password>monetdb</password>
     <isolation>TRANSACTION_SERIALIZABLE</isolation>
-    <uploadCode></uploadCode>
-    <uploadUrl></uploadUrl>
     <loaderThreads>1</loaderThreads>
+    <uploadUrl></uploadUrl>
     
-    <scalefactor>100</scalefactor>
+    <scalefactor>1000</scalefactor>
+    <!-- should be total of work.time bellow -->
+    <duration>60</duration>
+    <fixed_rate>300</fixed_rate>
     
     <!-- The workload -->
     <terminals>2</terminals>
     <works>
         <work>
           <time>60</time>
-          <rate>10</rate>
+          <rate>300</rate>
           <weights>50,50</weights>
         </work>
     </works>
@@ -27,10 +29,10 @@
     <!-- SIBENCH Procedures declaration -->
     <transactiontypes>
         <transactiontype>
-                <name>MinRecord</name>
+            <name>MinRecord</name>
         </transactiontype>
         <transactiontype>
-                <name>UpdateRecord</name>
+            <name>UpdateRecord</name>
         </transactiontype>
     </transactiontypes>
 </parameters>

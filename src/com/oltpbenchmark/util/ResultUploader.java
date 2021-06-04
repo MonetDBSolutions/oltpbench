@@ -60,7 +60,9 @@ public class ResultUploader {
     private static String[] BENCHMARK_KEY_FIELD = {
             "isolation",
             "scalefactor",
-            "terminals"
+            "terminals",
+            "duration",
+            "fixed_rate",
     };
 
     XMLConfiguration expConf;

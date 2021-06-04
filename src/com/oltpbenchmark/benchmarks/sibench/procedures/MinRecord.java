@@ -18,6 +18,7 @@ package com.oltpbenchmark.benchmarks.sibench.procedures;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -33,15 +34,16 @@ public class MinRecord extends Procedure{
     );
 
     public int run(Connection conn) throws SQLException {
-        PreparedStatement stmt = this.getPreparedStatement(conn, minStmt);
-        ResultSet r=stmt.executeQuery();
+        // PreparedStatement stmt = this.getPreparedStatement(conn, minStmt);
+        Statement stmt = conn.createStatement();
+        ResultSet r = stmt.executeQuery(minStmt.getSQL());
         int minId = 0;
         while(r.next())
         {
         	minId = r.getInt(1);
         }
         r.close();
-	conn.commit();
+	    conn.commit();
         return minId;
     }
 }
