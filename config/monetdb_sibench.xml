@@ -14,14 +14,13 @@
     <scalefactor>1000</scalefactor>
     <!-- should be total of work.time bellow -->
     <duration>60</duration>
-    <fixed_rate>300</fixed_rate>
     
     <!-- The workload -->
     <terminals>2</terminals>
     <works>
         <work>
           <time>60</time>
-          <rate>300</rate>
+          <rate>unlimited</rate>
           <weights>50,50</weights>
         </work>
     </works>
