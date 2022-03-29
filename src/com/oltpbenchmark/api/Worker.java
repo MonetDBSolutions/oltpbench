@@ -496,7 +496,7 @@ public abstract class Worker<T extends BenchmarkModule> implements Runnable {
                     // ------------------
                     } else if (ex.getErrorCode() == 0 && ex.getSQLState().equals("42000")) {
                         // Concurrency conflict
-                        status = TransactionStatus.RETRY_DIFFERENT;
+                        status = TransactionStatus.RETRY;
                         continue;// ------------------
                     // UNKNOWN!
                     // ------------------
