@@ -490,8 +490,14 @@ public abstract class Worker<T extends BenchmarkModule> implements Runnable {
                         // too, since this is unusual.
                         status = TransactionStatus.RETRY_DIFFERENT;
                         continue;
-
+                        
                     // ------------------
+                    // MonetDB
+                    // ------------------
+                    } else if (ex.getErrorCode() == 0 && ex.getSQLState().equals("42000")) {
+                        // Concurrency conflict
+                        status = TransactionStatus.RETRY_DIFFERENT;
+                        continue;// ------------------
                     // UNKNOWN!
                     // ------------------
                     } else {
