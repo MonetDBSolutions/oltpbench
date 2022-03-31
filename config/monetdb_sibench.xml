@@ -16,7 +16,7 @@
     <duration>60</duration>
     
     <!-- The workload -->
-    <terminals>2</terminals>
+    <terminals>8</terminals>
     <works>
         <work>
           <time>60</time>
