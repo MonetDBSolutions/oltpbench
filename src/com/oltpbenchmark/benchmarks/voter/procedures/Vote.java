@@ -47,6 +47,7 @@ package com.oltpbenchmark.benchmarks.voter.procedures;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -82,21 +83,22 @@ public class Vote extends Procedure {
     );
 	
     public long run(Connection conn, long voteId, long phoneNumber, int contestantNumber, long maxVotesPerPhoneNumber) throws SQLException {
-		
-        PreparedStatement ps = getPreparedStatement(conn, checkContestantStmt);
-        ps.setInt(1, contestantNumber);
-        ResultSet rs = ps.executeQuery();
+
+
+        Statement st = conn.createStatement();
+        String checkContestantQuery = String.format("SELECT contestant_number FROM CONTESTANTS WHERE contestant_number = %d;",contestantNumber);
+
+        ResultSet rs = st.executeQuery(checkContestantQuery);
         try {
             if (!rs.next()) {
-                return ERR_INVALID_CONTESTANT;    
+                return ERR_INVALID_CONTESTANT;
             }
         } finally {
             rs.close();
         }
-        
-        ps = getPreparedStatement(conn, checkVoterStmt);
-        ps.setLong(1, phoneNumber);
-        rs = ps.executeQuery();
+
+        String checkVoterQuery = String.format("SELECT COUNT(*) FROM VOTES WHERE phone_number = %d;", phoneNumber);
+        rs = st.executeQuery(checkVoterQuery);
         boolean hasVoterEnt = rs.next();
         try {
             if (hasVoterEnt && rs.getLong(1) >= maxVotesPerPhoneNumber) {
@@ -105,10 +107,9 @@ public class Vote extends Procedure {
         } finally {
             rs.close();
         }
-        
-        ps = getPreparedStatement(conn, checkStateStmt);
-        ps.setShort(1, (short)(phoneNumber / 10000000l));
-        rs = ps.executeQuery();
+
+        String checkStateQuery = String.format("SELECT state FROM AREA_CODE_STATE WHERE area_code = %d;", (short)(phoneNumber / 10000000l));
+        rs = st.executeQuery(checkStateQuery);
         // Some sample client libraries use the legacy random phone generation that mostly
         // created invalid phone numbers. Until refactoring, re-assign all such votes to
         // the "XX" fake state (those votes will not appear on the Live Statistics dashboard,
@@ -117,13 +118,15 @@ public class Vote extends Procedure {
         final String state = rs.next() ? rs.getString(1) : "XX";
         rs.close();
 
-        ps = getPreparedStatement(conn, insertVoteStmt);
-        ps.setLong(1, voteId);
-        ps.setLong(2, phoneNumber);
-        ps.setString(3, state);
-        ps.setInt(4, contestantNumber);
-        ps.execute();
-		
+        String insertVoteQuery = String.format(
+            "INSERT INTO VOTES (vote_id, phone_number, state, contestant_number, created) " +
+        "VALUES (%d, %d, '%s', %d, NOW());",
+            voteId,
+            phoneNumber,
+            state,
+            contestantNumber);
+        st.executeUpdate(insertVoteQuery);
+
         // Set the return value to 0: successful vote
         return VOTE_SUCCESSFUL;
     }
