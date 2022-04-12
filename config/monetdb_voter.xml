@@ -11,6 +11,8 @@
     <uploadUrl></uploadUrl>
     
     <scalefactor>1000</scalefactor>
+    <!-- should be total of work.time bellow -->
+    <duration>60</duration>
     
     <!-- The workload -->
     <terminals>2</terminals>
